@@ -1,6 +1,12 @@
 package use_case.clear_users;
 
-// TODO Complete me
-
 public class ClearOutputData {
+
+    private final String empty;
+    public ClearOutputData(String empty) {
+        this.empty = empty;
+    }
+    public String getEmpty(){
+        return this.empty;
+    }
 }
