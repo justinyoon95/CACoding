@@ -2,11 +2,10 @@ package use_case.clear_users;
 
 public class ClearOutputData {
 
-    private final String empty;
-    public ClearOutputData(String empty) {
-        this.empty = empty;
-    }
-    public String getEmpty(){
-        return this.empty;
-    }
+    private final String clearUsername;
+
+    public ClearOutputData(String clearUsername) { this.clearUsername = clearUsername; }
+
+    public String getClearUsername() { return this.clearUsername; }
+
 }
