@@ -2,9 +2,9 @@ package data_access;
 
 import entity.User;
 import entity.UserFactory;
+import use_case.clear_users.ClearUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-import use_case.clear_users.ClearUserDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -97,25 +97,24 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface, 
     public boolean existsByName(String identifier) {
         return accounts.containsKey(identifier);
     }
-    @Override
-    public String clear_all() {
-        try {
-            RandomAccessFile raf = new RandomAccessFile(csvFile, "rw");
-            raf.setLength(0);
 
-            raf.close();
-        }
-        catch (IOException e){
+    @Override
+    public String clearUsers() {
+
+        try {
+            RandomAccessFile file = new RandomAccessFile(csvFile, "rw");
+            file.setLength(0);
+            file.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String cleared = new String("");
-        for (User user : accounts.values()) {
-            cleared = cleared + user.getName() + "\n";
 
+        StringBuilder empty = new StringBuilder(new String(""));
+        for (User user : accounts.values()) {
+            empty.append(user.getName()).append("\n");
         }
         accounts.clear();
-        return cleared;
+        return empty.toString();
     }
 
 }
-

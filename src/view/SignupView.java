@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.clear_users.ClearState;
 import interface_adapter.clear_users.ClearController;
+import interface_adapter.clear_users.ClearState;
 import interface_adapter.clear_users.ClearViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
@@ -20,21 +20,20 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     public final String viewName = "sign up";
 
     private final SignupViewModel signupViewModel;
-
     private final ClearViewModel clearViewModel;
-
     private final JTextField usernameInputField = new JTextField(15);
     private final JPasswordField passwordInputField = new JPasswordField(15);
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
     private final SignupController signupController;
-
     private final ClearController clearController;
-
     private final JButton signUp;
     private final JButton cancel;
+
+    // TODO Note: this is the new JButton for clearing the users file
     private final JButton clear;
 
-    public SignupView(SignupController controller, SignupViewModel signupViewModel, ClearViewModel clearViewModel, ClearController clearController) {
+    public SignupView(SignupController controller, SignupViewModel signupViewModel, ClearController clearController,
+                      ClearViewModel clearViewModel) {
 
         this.signupController = controller;
         this.signupViewModel = signupViewModel;
@@ -58,6 +57,10 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         buttons.add(signUp);
         cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancel);
+
+        // TODO Note: the following line instantiates the "clear" button; it uses
+        //      a CLEAR_BUTTON_LABEL constant which is defined in the SignupViewModel class.
+        //      You need to add this "clear" button to the "buttons" panel.
         clear = new JButton(SignupViewModel.CLEAR_BUTTON_LABEL);
         buttons.add(clear);
 
@@ -82,8 +85,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(clear)){
-                            ClearState current_State = clearViewModel.getState();
+                        if (e.getSource().equals(clear)) {
+                            ClearState currentState = clearViewModel.getState();
                             clearController.execute();
                         }
                     }
@@ -173,18 +176,23 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         JOptionPane.showConfirmDialog(this, "Cancel not implemented yet.");
     }
 
+    /**
+     * React to a button click that results in e.
+     */
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
         String propertyName = evt.getPropertyName();
-        if(propertyName.equals("clear_state")) {
-            ClearState cur_state = (ClearState) evt.getNewValue();
-            if (cur_state.getClearedUsers() != null) {
-                JOptionPane.showMessageDialog(this, cur_state.getClearedUsers());
-            }
-        } else if (propertyName.equals("state")) {
+        if (propertyName.equals("state")) {
             SignupState state = (SignupState) evt.getNewValue();
             if (state.getUsernameError() != null) {
                 JOptionPane.showMessageDialog(this, state.getUsernameError());
+            }
+        } else if (propertyName.equals("clearstate")) {
+            ClearState state2 = (ClearState) evt.getNewValue();
+            if (state2.getClearedUsername() != null) {
+                JOptionPane.showMessageDialog(this, state2.getClearedUsername());
             }
         }
     }

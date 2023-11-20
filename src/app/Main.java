@@ -49,9 +49,8 @@ public class Main {
         ClearUserDataAccessInterface clearUserDataAccessInterface;
         try {
             clearUserDataAccessInterface = new FileUserDataAccessObject("./users.csv", new CommonUserFactory());
-        }
-        catch (IOException ex) {
-         throw new RuntimeException(ex);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
 
 
